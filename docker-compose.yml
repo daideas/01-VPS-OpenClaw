@@ -2,7 +2,6 @@ services:
   openclaw-gateway:
     build: .
     container_name: openclaw-gateway
-    # MEJORA: Forzamos root para evitar el error de permisos (EACCES) visto en logs
     user: "root"
     restart: unless-stopped
     environment:
@@ -12,9 +11,9 @@ services:
       - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN:-none}
       - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
       - OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS=https://claw.daidea.es
-      # Comandos inyectados para forzar el arranque del motor
       - OPENCLAW_COMMAND=gateway
-      - OPENCLAW_BIND=auto
+      # CAMBIO CLAVE: Forzamos el bind a 0.0.0.0 para que sea visible fuera del contenedor
+      - OPENCLAW_BIND=0.0.0.0
       - OPENCLAW_PORT=18789
       - OPENCLAW_ALLOW_UNCONFIGURED=true
     volumes:
