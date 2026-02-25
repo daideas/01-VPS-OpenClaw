@@ -15,8 +15,9 @@ services:
     ports:
       - "18789:18789"
     init: true
+    # Forzamos el arranque limpio según docs.openclaw.ai
     entrypoint: ["node", "dist/index.js"]
-    # AUDITADO: Usamos "auto" para la red y permitimos configuración por env vars
+    # "auto" es el valor que acepta OpenClaw para detectar la red del contenedor
     command: ["gateway", "--bind", "auto", "--port", "18789", "--allow-unconfigured"]
 
   openclaw-cli:
