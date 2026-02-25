@@ -15,9 +15,8 @@ services:
     ports:
       - "18789:18789"
     init: true
-    # AJUSTE TÉCNICO: Forzamos la ejecución del gateway directamente
     entrypoint: ["node", "dist/index.js"]
-    command: ["gateway", "--bind", "0.0.0.0", "--port", "18789"]
+    command: ["gateway", "--bind", "0.0.0.0", "--port", "18789", "--allow-unconfigured"]
 
   openclaw-cli:
     build: .
