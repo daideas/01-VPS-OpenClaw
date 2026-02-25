@@ -7,14 +7,11 @@ services:
     environment:
       - HOME=/home/node
       - OPENCLAW_CONFIG=${OPENCLAW_CONFIG}
-      - OPENCLAW_COMMAND=${OPENCLAW_COMMAND}
-      - OPENCLAW_BIND=${OPENCLAW_BIND}
-      - OPENCLAW_PORT=${OPENCLAW_PORT}
-      - OPENCLAW_ALLOW_UNCONFIGURED=${OPENCLAW_ALLOW_UNCONFIGURED}
-      - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=${OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK}
-      - OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS=${OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS}
+      - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
     volumes:
       - ./workspace:/home/node/.openclaw/workspace
     ports:
       - "18789:18789"
     init: true
+    # ESTA ES LA CLAVE: Forzamos el comando correcto al nacer el contenedor
+    entrypoint: ["node", "/app/dist/index.js", "gateway", "--bind", "lan", "--port", "18789", "--allow-unconfigured"]
