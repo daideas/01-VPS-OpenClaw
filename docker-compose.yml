@@ -10,14 +10,17 @@ services:
       - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN:-none}
       - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
       - OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS=https://claw.daidea.es
+      # INYECTAMOS LOS COMANDOS COMO VARIABLES (ESTO NO SE PUEDE IGNORAR)
+      - OPENCLAW_COMMAND=gateway
+      - OPENCLAW_BIND=auto
+      - OPENCLAW_PORT=18789
+      - OPENCLAW_ALLOW_UNCONFIGURED=true
     volumes:
       - ./config:/home/node/.openclaw
       - ./workspace:/home/node/.openclaw/workspace
     ports:
       - "18789:18789"
     init: true
-    # FUSIÓN TÉCNICA: Al ponerlo todo en entrypoint, Docker NO puede ignorar los argumentos
-    entrypoint: ["node", "dist/index.js", "gateway", "--bind", "auto", "--port", "18789", "--allow-unconfigured"]
 
   openclaw-cli:
     build: .
@@ -31,4 +34,3 @@ services:
     stdin_open: true
     tty: true
     init: true
-    entrypoint: ["node", "dist/index.js"]
