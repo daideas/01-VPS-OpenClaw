@@ -6,33 +6,13 @@ services:
     restart: unless-stopped
     environment:
       - HOME=/home/node
-      - TERM=xterm-256color
       - OPENCLAW_CONFIG=${OPENCLAW_CONFIG}
-      - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN:-none}
       - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
-      - OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS=https://claw.daidea.es
-      - OPENCLAW_COMMAND=gateway
-      # CAMBIO CLAVE: Forzamos el bind a 0.0.0.0 para que sea visible fuera del contenedor
-      - OPENCLAW_BIND=0.0.0.0
-      - OPENCLAW_PORT=18789
-      - OPENCLAW_ALLOW_UNCONFIGURED=true
+    # Quitamos el volumen de config para que no lea archivos viejos con 127.0.0.1
     volumes:
-      - ./config:/home/node/.openclaw
       - ./workspace:/home/node/.openclaw/workspace
     ports:
       - "18789:18789"
     init: true
-
-  openclaw-cli:
-    build: .
-    container_name: openclaw-cli
-    user: "root"
-    environment:
-      - HOME=/home/node
-      - OPENCLAW_CONFIG=${OPENCLAW_CONFIG}
-    volumes:
-      - ./config:/home/node/.openclaw
-      - ./workspace:/home/node/.openclaw/workspace
-    stdin_open: true
-    tty: true
-    init: true
+    # Comando directo que ignora cualquier configuración previa
+    command: ["node", "dist/index.js", "gateway", "--bind", "0.0.0.0", "--port", "18789", "--allow-unconfigured"]
