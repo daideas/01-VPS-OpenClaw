@@ -8,7 +8,6 @@ services:
       - TERM=xterm-256color
       - OPENCLAW_CONFIG=${OPENCLAW_CONFIG}
       - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN:-none}
-      # Mejora: Forzamos la seguridad para evitar el error de los logs
       - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
     volumes:
       - ./config:/home/node/.openclaw
@@ -16,8 +15,9 @@ services:
     ports:
       - "18789:18789"
     init: true
-    # Mejora: Bind a 0.0.0.0 para que Dokploy pueda "puentear" el dominio
-    command: ["node", "dist/index.js", "gateway", "--bind", "0.0.0.0", "--port", "18789"]
+    # AJUSTE TÉCNICO: Forzamos la ejecución del gateway directamente
+    entrypoint: ["node", "dist/index.js"]
+    command: ["gateway", "--bind", "0.0.0.0", "--port", "18789"]
 
   openclaw-cli:
     build: .
