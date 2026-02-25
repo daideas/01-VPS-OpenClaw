@@ -15,10 +15,8 @@ services:
     ports:
       - "18789:18789"
     init: true
-    # Forzamos el arranque limpio según docs.openclaw.ai
-    entrypoint: ["node", "dist/index.js"]
-    # "auto" es el valor que acepta OpenClaw para detectar la red del contenedor
-    command: ["gateway", "--bind", "auto", "--port", "18789", "--allow-unconfigured"]
+    # Fusión definitiva: Ejecutable + Comando + Argumentos en una sola línea
+    entrypoint: ["node", "dist/index.js", "gateway", "--bind", "auto", "--port", "18789", "--allow-unconfigured"]
 
   openclaw-cli:
     build: .
