@@ -7,12 +7,14 @@ services:
     environment:
       - HOME=/home/node
       - OPENCLAW_CONFIG=${OPENCLAW_CONFIG}
-      - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=true
-    # Quitamos el volumen de config para que no lea archivos viejos con 127.0.0.1
+      - OPENCLAW_COMMAND=${OPENCLAW_COMMAND}
+      - OPENCLAW_BIND=${OPENCLAW_BIND}
+      - OPENCLAW_PORT=${OPENCLAW_PORT}
+      - OPENCLAW_ALLOW_UNCONFIGURED=${OPENCLAW_ALLOW_UNCONFIGURED}
+      - OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK=${OPENCLAW_DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK}
+      - OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS=${OPENCLAW_CONTROL_UI_ALLOWED_ORIGINS}
     volumes:
       - ./workspace:/home/node/.openclaw/workspace
     ports:
       - "18789:18789"
     init: true
-    # Comando directo que ignora cualquier configuración previa
-    command: ["node", "dist/index.js", "gateway", "--bind", "0.0.0.0", "--port", "18789", "--allow-unconfigured"]
